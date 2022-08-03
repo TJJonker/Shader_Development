@@ -21,25 +21,27 @@ Shader "Unlit/Shader1"
             struct MeshData
             {
                 float4 vertex : POSITION;
+                float3 normals : NORMAL;
                 float2 uv : TEXCOORD0;
             };
 
             struct Interpolators
             {
                 float4 vertex : SV_POSITION;
-                //float2 uv : TEXCOORD0;
+                float3 normal : TEXCOORD0;
             };
 
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                o.normal = v.normals;
                 return o;
             }
 
             fixed4 frag (Interpolators i) : SV_Target
             {
-                return _Color;
+                return float4(i.normal, 1);
             }
             ENDCG
         }
